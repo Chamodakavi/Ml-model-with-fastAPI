@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+            color: #2c3e50;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        // This function will convert the form data to JSON and send it via Fetch API
+        function submitForm(event) {
+            event.preventDefault();  // Prevent default form submission
+
+            // Get form data
+            const form = document.getElementById("predictionForm");
+            const formData = new FormData(form);
+            const formObject = {};
+
+            // Convert FormData to a plain object
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            // Convert form object to JSON
+            const jsonData = JSON.stringify(formObject);
+
+            // Send data using Fetch API with POST method
+            fetch("http://127.0.0.1:8000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: jsonData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Show prediction result in alert or display it in HTML
+                    alert("Prediction: " + data.prediction + ", Confidence: " + data.confidence);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>House Price Prediction Form</h2>
+        <form id="predictionForm" onsubmit="submitForm(event)">
+            <label for="area">Area:</label><br>
+            <input type="text" id="area" name="area"><br><br>
+
+            <label for="bedrooms">Bedrooms:</label><br>
+            <input type="text" id="bedrooms" name="bedrooms"><br><br>
+
+            <label for="bathrooms">Bathrooms:</label><br>
+            <input type="text" id="bathrooms" name="bathrooms"><br><br>
+
+            <label for="stories">Stories:</label><br>
+            <input type="text" id="stories" name="stories"><br><br>
+
+            <label for="parking">Parking:</label><br>
+            <input type="text" id="parking" name="parking"><br><br>
+
+            <label for="mainroad_yes">Mainroad (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="mainroad_yes" name="mainroad_yes"><br><br>
+
+            <label for="basement_yes">Basement (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="basement_yes" name="basement_yes"><br><br>
+
+            <label for="airconditioning_yes">Air Conditioning (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="airconditioning_yes" name="airconditioning_yes"><br><br>
+
+            <label for="prefarea_yes">Preferred Area (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="prefarea_yes" name="prefarea_yes"><br><br>
+
+            <label for="furnishingstatus_semi_furnished">Furnishing Status (Semi-furnished):</label><br>
+            <input type="text" id="furnishingstatus_semi_furnished" name="furnishingstatus_semi_furnished"><br><br>
+
+            <label for="furnishingstatus_unfurnished">Furnishing Status (Unfurnished):</label><br>
+            <input type="text" id="furnishingstatus_unfurnished" name="furnishingstatus_unfurnished"><br><br>
+
+            <label for="guestroom_yes">Guestroom (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="guestroom_yes" name="guestroom_yes"><br><br>
+
+            <label for="hotwaterheating_yes">Hotwater Heating (1 for Yes, 0 for No):</label><br>
+            <input type="text" id="hotwaterheating_yes" name="hotwaterheating_yes"><br><br>
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+</body>
+
+</html>
